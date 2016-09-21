@@ -1,0 +1,34 @@
+{
+  "name": "bus.fyi",
+  "version": "0.0.1",
+  "description": "bus tracker",
+  "main": "gtfs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericmikkelsen/bus.fyi.git"
+  },
+  "keywords": [
+    "gtfs"
+  ],
+  "author": "eric mikkelsen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ericmikkelsen/bus.fyi/issues"
+  },
+  "homepage": "https://github.com/ericmikkelsen/bus.fyi#readme",
+  "dependencies": {
+    "csv-parse": "^1.1.7",
+    "csvtojson": "^1.0.0",
+    "event-stream": "^3.3.4",
+    "express": "^4.14.0",
+    "html-minifier": "^3.0.2",
+    "iconv-lite": "^0.4.13",
+    "jsonfile": "^2.3.1",
+    "nunjucks": "^2.5.0",
+    "stream": "0.0.2",
+    "xml2js": "^0.4.17"
+  }
+}
