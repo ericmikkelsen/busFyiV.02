@@ -20,14 +20,18 @@
   },
   "homepage": "https://github.com/ericmikkelsen/busFyiV.02.git#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "csv-parse": "^1.1.7",
     "csvtojson": "^1.0.0",
     "event-stream": "^3.3.4",
     "express": "^4.14.0",
     "html-minifier": "^3.0.2",
     "iconv-lite": "^0.4.13",
+    "install": "^0.8.1",
     "jsonfile": "^2.3.1",
+    "npm": "^3.10.7",
     "nunjucks": "^2.5.0",
+    "request": "^2.75.0",
     "stream": "0.0.2",
     "xml2js": "^0.4.17"
   }

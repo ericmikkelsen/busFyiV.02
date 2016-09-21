@@ -1,0 +1,59 @@
+body{
+  background:#eee;
+  padding:5%;
+  color:#333;
+  font-size:1.2em;
+  font-size:calc(1em + 1vw);
+  font-family: -apple-system, BlinkMacSystemFont,
+   "Segoe UI", "Roboto", "Oxygen",
+   "Ubuntu", "Cantarell", "Fira Sans",
+   "Droid Sans", "Helvetica Neue", sans-serif;
+  }
+
+/*readable*/
+.u-r{
+  width: 100%;
+  max-width: 22em;
+  }
+
+label{
+  display:block;
+  margin: 0 0 1em;
+  }
+
+/* html style formating, hide when css loads */
+.hf{
+  display: none;
+  }
+
+.in{
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  appearance:none;
+  border:none;
+  background: #fff;
+  font-size:.75em;
+  margin: 0 0 2em;
+  display: block;
+  width:95%;
+  padding:1em 2.5%;
+  opacity:.5;
+  }
+
+.in:focus,
+.in:valid{
+  opacity:1;
+  animation:none;
+  }
+
+.in:focus{
+  outline: .25em #000 solid;
+  }
+
+
+.in--btn{
+  border:none;
+  background:#444;
+  color:#fff;
+  margin-right: 0;
+  }
