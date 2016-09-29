@@ -1,0 +1,10 @@
+  <li class="mdl u-fw">
+        {% if url %}
+          <a class="mdl_heading" href="{{url}}">{{heading}}</a>
+        {% else %}
+          <p class="mdl_heading">{{heading}}</p>
+        {% endif %}
+        {% if kicker %}
+          <p class="mdl_kicker">{{kicker}}</p>
+        {% endif %}
+  </li>
