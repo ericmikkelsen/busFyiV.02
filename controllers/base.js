@@ -123,36 +123,83 @@ var folders = {
     stops: function(listen){
 
         stops__body = function(res,req,write,data,callback){
+          write('<h1 class="u-fw">Nearby Stops</h1>');
           address=req.body.address; //i am accessign req object body for username
           zip=req.body.zip;
-          request({url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address +',+' + zip + '&key=' + keys.google_maps}, function (error, response, body) {
 
+          console.log(req.body);
+
+          if (typeof req.body.address !== undefined && req.body.latitude == undefined){
+
+          request({url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address +',+' + zip + '&key=' + keys.google_maps}, function (error, response, body) {
+            write('<ul class="list--unstyled list--striped">');
            //turn json into parseable data
              JSON_body = JSON.parse(body, 'utf8');
              location = JSON_body.results[0].geometry.location;
-            write('<h1>Nearby Stops</h1><p></p>');
+             console.log('test');
 
+             //break this out into it's only thing
              for (var i = 0; i < gtfs_data.stops.length; i++) {
                //ERIC TURN THIS IF STATMENT INTO FILTER.
                if (between(gtfs_data.stops[i].stop_lon,location.lng - .003, location.lng + .003)&&between(gtfs_data.stops[i].stop_lat,location.lat - .003, location.lat + .003)) {
                 //console.log(gtfs_data.stops[i]);
-                 btn_data = {
-                   btn:{
-                     url:'stp?id='+gtfs_data.stops[i].stop_id+'&name='+encodeURIComponent(gtfs_data.stops[i].stop_name),
-                     text:gtfs_data.stops[i].stop_name,
-                   }
-                 }
+                //u = url
+                //t = text
+                //l = link
+                //d = description
+                u = 'stp?id='+gtfs_data.stops[i].stop_id+'&name='+encodeURIComponent(gtfs_data.stops[i].stop_name);
+                t = gtfs_data.stops[i].stop_name;
+                d = gtfs_data.stops[i].stop_desc.replace(gtfs_data.stops[i].stop_name+', ', '');
 
-                  write(nj.render('atm-btn.html', btn_data) );
-                  desc = gtfs_data.stops[i].stop_desc.replace(gtfs_data.stops[i].stop_name+', ', '');
-                  write('<p>'+desc+'</p>');
+                stop_data = {
+                  url: u,
+                  heading: t,
+                  kicker: d,
+                }
+                  //write(nj.render('atm-btn.html', btn_data) );
+                  write(nj.render('mdl_li.html',stop_data));
+
                }//if between
 
              }//for
-
              //this is almost always
+             write('</ul>');
              callback();
            });//request
+
+        /*end if address exists*/
+        }else if(typeof req.body.longitude !== undefined && typeof req.body.latitude !== undefined){
+
+          write('<ul class="list--unstyled list--striped">');
+          //break this out into it's only thing
+          for (var i = 0; i < gtfs_data.stops.length; i++) {
+            //ERIC TURN THIS IF STATMENT INTO FILTER.
+            lng = parseFloat(req.body.longitude);
+            lat = parseFloat(req.body.latitude);
+            console.log(lng+'/'+lat);
+
+            if (between(gtfs_data.stops[i].stop_lon, lng - .003, lng + .003)&&between(gtfs_data.stops[i].stop_lat,lat - .003, lat + .003)) {
+             console.log(gtfs_data.stops[i]);
+               u = 'stp?id='+gtfs_data.stops[i].stop_id+'&name='+encodeURIComponent(gtfs_data.stops[i].stop_name);
+               t = gtfs_data.stops[i].stop_name;
+               d = gtfs_data.stops[i].stop_desc.replace(gtfs_data.stops[i].stop_name+', ', '');
+               stop_data = {
+                 url: u,
+                 heading: t,
+                 kicker: d,
+               }
+              write(nj.render('mdl_li.html',stop_data));
+
+            }//if between
+
+          }//for
+          write('</ul>');
+          //this is almost always
+          callback();
+
+
+
+        }/*end if long & lat exists*/
 
           }
         this.base__post(listen,stops__body,{});
@@ -161,7 +208,9 @@ var folders = {
 
       stp__body = function(res,req,write,data,callback){
 
-        write('<h1>'+req.query.name+'</h1>');
+        write('<h1 class="u-fw">'+req.query.name+'</h1>');
+
+
         ///write('<h2>Scheduled Arrival Times</h2>');
 
         //Scheduled TIMES holding til I can figure out how to do this
@@ -169,42 +218,7 @@ var folders = {
         stop_json = folders.data+'/stops/'+req.query.id+'.json';
         stop_json= fs.readFileSync(stop_json, 'utf8');
         stop_json = JSON.parse(stop_json,'utf8');
-/*
-        today = new Date();
-        min = today.getMinutes();
-        hh = today.getHours();
-        dd = today.getDate();
-        mm = today.getMonth();
-        yyyy = today.getFullYear();
-        today_timestamp = today.getTime();
 
-             for (var i = 0; i < stop_json.arrivals.length; i++) {
-
-               // TURN THIS IF STATMENT INTO FILTER.
-               stop_time = stop_json.arrivals[i].arrival_time.split(":");
-
-              //console.log(today);
-              stop_time = new Date(yyyy,mm,dd,stop_time[0],stop_time[1]);
-              today_min = today_timestamp;
-              stop_min = stop_time.getTime();
-              timeTil = (stop_min - today_min) / 1000 /60;
-
-              if (timeTil <= 30 && timeTil >= 0) {
-
-
-                stpHh = stop_time.getHours();
-                if (stpHh>12) {
-                  stpHh = stpHh-12;
-                }
-                stpMin = ( stop_time.getMinutes()<10?'0':'') + stop_time.getMinutes();
-
-                stpLabel = stop_json.arrivals[i].route_id+' '+stop_json.arrivals[i].stop_headsign;
-
-                write('<p>'+stpLabel+' - '+stpHh+':'+stpMin+''+'</p>');
-              }
-
-            }//for
-*/
         //ERIC MAKE THIS REUSABLE AT SOMEPOINT IN LIFE
         //LIVE DATA
         urls = {
@@ -227,7 +241,6 @@ var folders = {
         };//urls
         //console.log(stop_json.arrivals[0]);
         stop_type = stop_json.arrivals[0].route_type;
-
         if (stop_json.arrivals[0] !== null) {
 
 
@@ -241,9 +254,11 @@ var folders = {
             parseString(body, function (err, result) {
 
 
+
                 predictions = result['bustime-response'].prd;
                 if (predictions!= undefined|null) {
-                  write('<h2>Live Arrival Times</h2>');
+                  write('<h2 class="u-fw">Live Arrival Times</h2>');
+                  write('<ul class="list--unstyled list--striped">');
 
                 for (var i = 0; i < predictions.length; i++) {
 
@@ -266,19 +281,27 @@ var folders = {
 
                   rt_name = gtfs_data.routes.filter(getRt);
                   rt_name = rt_name[0].route_long_name;
+                  //t = time
+                  //r = route_data
+                  stop_data = {
+                    heading: arrival[0]+':'+arrival[1],
+                    kicker: predictions[i].rt+' '+rt_name,
+                  }
 
-                  write('<p>#'+predictions[i].rt+' '+rt_name+' - '+arrival[0]+':'+arrival[1]+'</p>');
+                  write(nj.render('mdl_li.html',stop_data));
+
+                  //write('<p class="u-fw">#'+predictions[i].rt+' '+rt_name+' - '+arrival[0]+':'+arrival[1]+'</p>');
 
                 }//for
+                write('</ul>');
               }else{
-                write('<p>There are no bus arrivals any time soon</p>');
+                write('<p class="u-fw">There are no bus arrivals any time soon</p>');
               }//if predictions is greather than 0
               end();
 
             });//parseString
-
           });//request
-
+          //write('</ul>')
         }else if(stop_type == 1){
 
 
@@ -286,7 +309,7 @@ var folders = {
           request( {url: url},function(error, response, body){
             parseString(body, function (err, result) {
 
-              write('<h2>Live Arrival Times</h2>');
+              write('<h2 class="u-fw">Live Arrival Times</h2>');
               if (result) {
                   for (var i = 0; i < result.ctatt.eta.length; i++) {
 
@@ -296,11 +319,11 @@ var folders = {
                     if(parseInt(arrival[0])>12){
                       arrival[0] = arrival[0]-12;
                     }
-                    write('<p>'+  result.ctatt.eta[i].rt+' '+result.ctatt.eta[i].destNm+' - '+arrival[0]+':'+arrival[1]+'</p>');
+                    write('<p class="u-fw">'+  result.ctatt.eta[i].rt+' '+result.ctatt.eta[i].destNm+' - '+arrival[0]+':'+arrival[1]+'</p>');
 
                   }
               }else{
-                  write('<p>There are no train arrivals any time soon</p>');
+                  write('<p class="u-fw">There are no train arrivals any time soon</p>');
               }
               end();
             });
@@ -310,7 +333,6 @@ var folders = {
         }else{
           write('</br>not working</br>');
         }//
-
       }else{
         write('<p>There are no arrivals any time soon</p>');
         end();
@@ -323,7 +345,7 @@ var folders = {
 
 
   //turn on express, listen to port 3000
-    app.listen(3000, function () {console.log('Example app listening on port 3000!');});
+    app.listen(8080, function () {console.log('Example app listening on port 8080!');});
   //watch the static folders directory for requests
     app.use(express.static(folders.site));
   //listen for stops requests

@@ -16,7 +16,7 @@ body{
   max-width: 22em;
   }
 
-label{
+label,p{
   display:block;
   margin: 0 0 1em;
   }
@@ -57,3 +57,101 @@ label{
   color:#fff;
   margin-right: 0;
   }
+h1{
+  font-size:1.5em;
+  margin: 0 0 1em;
+}
+
+body{
+    letter-spacing:.03em;
+  background:#eee;
+  padding: 0;
+  color:#000;
+  font-size:1.2em;
+  font-size:calc(1em + 1vw);
+  font-family: -apple-system, BlinkMacSystemFont,
+   "Segoe UI", "Roboto", "Oxygen",
+   "Ubuntu", "Cantarell", "Fira Sans",
+   "Droid Sans", "Helvetica Neue", sans-serif;
+  padding: 0;
+  margin: 0;
+  }
+
+  h1{
+    font-size: 2.4em;
+    line-height: 1.25;
+    margin-bottom:.6125em;
+    margin-top: .6125em;
+  }
+
+  h2{
+    font-size: 1.3375em;
+    line-height: 1.1214953271;
+    margin-bottom:1.1214953271em;
+    margin-top: 0;
+  }
+  p{
+    font-weight:300;
+    font-size:1em;
+    line-height: 1.5;
+    margin:0;}
+
+
+/* full-width */
+.u-fw{
+  padding-left:5%;
+  padding-right:5%;
+}
+
+.bg-grey-tint{
+  background: #e5e5e5;
+}
+
+.list--unstyled{
+  margin: 0;
+  padding: 0;
+  position: static;
+  list-style:none;
+}
+.list--striped li:nth-of-type(even){
+  background: #e5e5e5;
+}
+/* html formatting */
+.hf{display: none;}
+
+.h1-w_subhead{
+  margin-bottom: 0;
+}
+.u-subhead{
+  margin:0 0 1.5em;
+}
+.mdl{
+  display: block;
+  margin: 0;
+  padding-bottom:1.5em;
+  padding-top:.75em;
+  border-bottom:#ccc .05em solid
+}
+
+.mdl_heading{
+  color:#111;
+  font-weight:700;
+  font-size:1.25em;
+  line-height: 1.2;
+  display: inline-block;
+  text-decoration:none;
+  margin:0 0;
+  padding:.6em 0 .3em;
+  margin-bottom:.3em;
+}
+a.mdl_heading{
+  border-bottom:.05em solid;
+}
+
+.mdl_kicker{
+  color:#000;
+  font-weight:200;
+  font-size:.75em;
+  line-height: 2em;
+  margin: 0;
+}
